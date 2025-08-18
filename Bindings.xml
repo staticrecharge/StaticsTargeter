@@ -1,0 +1,9 @@
+<Bindings>
+	<Layer name="SI_KEYBINDINGS_LAYER_GENERAL">
+		<Category name="Static's Targeter">
+			<Action name="STAR_CYCLE_UP">
+				<Down> STAR_CYCLE_UP() </Down>
+			</Action>
+		</Category>
+	</Layer>
+</Bindings>
