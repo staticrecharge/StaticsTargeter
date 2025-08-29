@@ -58,7 +58,233 @@ function Settings:CreateSettingsPanel()
 	local i = 1
 	local k = 1
 
-  --i = i + 1
+	--k = k + 1
+	controls[k] = {
+		type = "checkbox",
+    name = "Hostile",
+    getFunc = function() return Parent.SV.enabledUnitType[1] end,
+    setFunc = function(value) Parent.SV.enabledUnitType[1] = value end,
+    --tooltip = "",
+    width = "half",
+		default = Parent.Defaults.enabledUnitType[1],
+	}
+
+	k = k + 1
+	controls[k] = {
+		type = "checkbox",
+    name = "Neutral",
+    getFunc = function() return Parent.SV.enabledUnitType[2] end,
+    setFunc = function(value) Parent.SV.enabledUnitType[2] = value end,
+    --tooltip = "",
+    width = "half",
+		default = Parent.Defaults.enabledUnitType[2],
+	}
+
+	k = k + 1
+	controls[k] = {
+		type = "checkbox",
+    name = "Self",
+    getFunc = function() return Parent.SV.enabledUnitType[0] end,
+    setFunc = function(value) Parent.SV.enabledUnitType[0] = value end,
+    --tooltip = "",
+    width = "half",
+		default = Parent.Defaults.enabledUnitType[0],
+	}
+
+	k = k + 1
+	controls[k] = {
+		type = "checkbox",
+    name = "Friendly",
+    getFunc = function() return Parent.SV.enabledUnitType[3] end,
+    setFunc = function(value) Parent.SV.enabledUnitType[3] = value end,
+    --tooltip = "",
+    width = "half",
+		default = Parent.Defaults.enabledUnitType[3],
+	}
+
+	k = k + 1
+	controls[k] = {
+		type = "checkbox",
+    name = "Player",
+    getFunc = function() return Parent.SV.enabledUnitType[4] end,
+    setFunc = function(value) Parent.SV.enabledUnitType[4] = value end,
+    --tooltip = "",
+    width = "half",
+		default = Parent.Defaults.enabledUnitType[4],
+	}
+
+	k = k + 1
+	controls[k] = {
+		type = "checkbox",
+    name = "NPC Ally",
+    getFunc = function() return Parent.SV.enabledUnitType[5] end,
+    setFunc = function(value) Parent.SV.enabledUnitType[5] = value end,
+    --tooltip = "",
+    width = "half",
+		default = Parent.Defaults.enabledUnitType[5],
+	}
+
+	k = k + 1
+	controls[k] = {
+		type = "checkbox",
+    name = "Dead",
+    getFunc = function() return Parent.SV.enabledUnitType[6] end,
+    setFunc = function(value) Parent.SV.enabledUnitType[6] = value end,
+    --tooltip = "",
+    width = "half",
+		default = Parent.Defaults.enabledUnitType[6],
+	}
+
+	k = k + 1
+	controls[k] = {
+		type = "checkbox",
+    name = "Interact",
+    getFunc = function() return Parent.SV.enabledUnitType[7] end,
+    setFunc = function(value) Parent.SV.enabledUnitType[7] = value end,
+    tooltip = "Not sure what this one does but included it for completion.",
+    width = "half",
+		default = Parent.Defaults.enabledUnitType[7],
+	}
+
+	k = k + 1
+	controls[k] = {
+		type = "checkbox",
+    name = "Companion",
+    getFunc = function() return Parent.SV.enabledUnitType[8] end,
+    setFunc = function(value) Parent.SV.enabledUnitType[8] = value end,
+    --tooltip = "",
+    width = "half",
+		default = Parent.Defaults.enabledUnitType[8],
+	}
+
+	--i = i + 1
+  optionsData[i] = {
+		type = "submenu",
+		name = "Target Types",
+		controls = controls,
+	}
+
+	controls = {}
+	
+	k = 1
+	controls[k] = {
+    type = "description",
+    text = "This must be a continuous list, aka you can't have a disabled option between any icons you want to actually use. Putting two or more of the same icons back to back could result in accidentally removing the icon from the intended target instead.\nHolding SHIFT while using the keybind will repeat the previous icon used.\nHolding CTRL while using the keybind will restart the list from the beginning.",
+    width = "full",
+	}
+
+	k = k + 1
+	controls[k] = {
+    type = "dropdown",
+    name = "1",
+    choices = Parent.IconFormatted,
+    choicesValues = Parent.IconIndexes,
+    getFunc = function() return Parent.SV.IconOrder[1] end,
+    setFunc = function(var) Parent.SV.IconOrder[1] = var end,
+    width = "full",
+    scrollable = false,
+    default = Parent.Defaults.IconOrder[1], -- default value or function that returns the default value (optional)
+	}
+
+	k = k + 1
+	controls[k] = {
+    type = "dropdown",
+    name = "2",
+    choices = Parent.IconFormatted,
+    choicesValues = Parent.IconIndexes,
+    getFunc = function() return Parent.SV.IconOrder[2] end,
+    setFunc = function(var) Parent.SV.IconOrder[2] = var end,
+    width = "full",
+    scrollable = false,
+    default = Parent.Defaults.IconOrder[2], -- default value or function that returns the default value (optional)
+	}
+
+	k = k + 1
+	controls[k] = {
+    type = "dropdown",
+    name = "3",
+    choices = Parent.IconFormatted,
+    choicesValues = Parent.IconIndexes,
+    getFunc = function() return Parent.SV.IconOrder[3] end,
+    setFunc = function(var) Parent.SV.IconOrder[3] = var end,
+    width = "full",
+    scrollable = false,
+    default = Parent.Defaults.IconOrder[3], -- default value or function that returns the default value (optional)
+	}
+
+	k = k + 1
+	controls[k] = {
+    type = "dropdown",
+    name = "4",
+    choices = Parent.IconFormatted,
+    choicesValues = Parent.IconIndexes,
+    getFunc = function() return Parent.SV.IconOrder[4] end,
+    setFunc = function(var) Parent.SV.IconOrder[4] = var end,
+    width = "full",
+    scrollable = false,
+    default = Parent.Defaults.IconOrder[4], -- default value or function that returns the default value (optional)
+	}
+
+	k = k + 1
+	controls[k] = {
+    type = "dropdown",
+    name = "5",
+    choices = Parent.IconFormatted,
+    choicesValues = Parent.IconIndexes,
+    getFunc = function() return Parent.SV.IconOrder[5] end,
+    setFunc = function(var) Parent.SV.IconOrder[5] = var end,
+    width = "full",
+    scrollable = false,
+    default = Parent.Defaults.IconOrder[5], -- default value or function that returns the default value (optional)
+	}
+
+	k = k + 1
+	controls[k] = {
+    type = "dropdown",
+    name = "6",
+    choices = Parent.IconFormatted,
+    choicesValues = Parent.IconIndexes,
+    getFunc = function() return Parent.SV.IconOrder[6] end,
+    setFunc = function(var) Parent.SV.IconOrder[6] = var end,
+    width = "full",
+    scrollable = false,
+    default = Parent.Defaults.IconOrder[6], -- default value or function that returns the default value (optional)
+	}
+
+	k = k + 1
+	controls[k] = {
+    type = "dropdown",
+    name = "7",
+    choices = Parent.IconFormatted,
+    choicesValues = Parent.IconIndexes,
+    getFunc = function() return Parent.SV.IconOrder[7] end,
+    setFunc = function(var) Parent.SV.IconOrder[7] = var end,
+    width = "full",
+    scrollable = false,
+    default = Parent.Defaults.IconOrder[7], -- default value or function that returns the default value (optional)
+	}
+
+	k = k + 1
+	controls[k] = {
+    type = "dropdown",
+    name = "8",
+    choices = Parent.IconFormatted,
+    choicesValues = Parent.IconIndexes,
+    getFunc = function() return Parent.SV.IconOrder[8] end,
+    setFunc = function(var) Parent.SV.IconOrder[8] = var end,
+    width = "full",
+    scrollable = false,
+    default = Parent.Defaults.IconOrder[8], -- default value or function that returns the default value (optional)
+	}
+
+	i = i + 1
+  optionsData[i] = {
+		type = "submenu",
+		name = "Icon Order",
+		controls = controls,
+	}
+
+  i = i + 1
   optionsData[i] = {
 		type = "header",
 		name = "Misc.",

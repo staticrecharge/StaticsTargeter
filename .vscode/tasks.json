@@ -6,7 +6,7 @@
     {
       "label": "copy",
       "type": "shell",
-      "command": "robocopy 'E:\\Documents\\Add-On Dev\\StaticsTargeter' 'E:\\Documents\\Elder Scrolls Online\\pts\\AddOns\\StaticsTargeter' StaticsTargeter.addon StaticsTargeter.lua Settings.lua Bindings.xml changelog.readme",
+      "command": "robocopy 'E:\\Documents\\Add-On Dev\\StaticsTargeter' 'E:\\Documents\\Elder Scrolls Online\\live\\AddOns\\StaticsTargeter' StaticsTargeter.addon StaticsTargeter.lua Settings.lua Bindings.xml changelog.readme",
       "problemMatcher": [],
       "group": {
         "kind": "build",

@@ -51,10 +51,16 @@ function ST:Initialize()
 	}
 
 	-- session variables
-	self.iconIndex = {
-		current = 1,
-		max = 8,
-	}
+	self.currentIconIndex = 1
+
+	self.IconPaths = {}
+	self.IconFormatted = {}
+	for iconIndex, iconPath in ipairs(ZO_GetPlatformTargetMarkerIconTable()) do
+		self.IconPaths[iconIndex] = iconPath
+		self.IconFormatted[iconIndex] = zo_strformat("|t100%:100%:<<1>>|t", iconPath)
+	end
+	table.insert(self.IconFormatted, "-- Disabled --")
+	self.IconIndexes = {1, 2, 3, 4, 5, 6, 7, 8, 9} -- 9 is the disabled option
 
   -- saved variable defaults
   self.Defaults = {
@@ -62,6 +68,7 @@ function ST:Initialize()
 		debugMode = false,
 		settingsChanged = true,
 		enabledUnitType = {
+			[0] = false, -- self (no target)
 			true,				-- hostile
 			false,			-- neutral
 			false,			-- friendly
@@ -71,6 +78,7 @@ function ST:Initialize()
 			false,			-- interact
 			false,			-- companion
 		},
+		IconOrder = {1, 2, 3, 4, 5, 6, 7, 8}, -- iconIndexes in prefered order, nil if not used
 	}
 
 	-- saved variables initialization
@@ -80,10 +88,13 @@ function ST:Initialize()
 	self.Settings = StaticsTargeterInitSettings(self)
   
   -- control bindings
-  ZO_CreateStringId("SI_BINDING_NAME_STAR_CYCLE_UP", "Next Icon")
+  ZO_CreateStringId("SI_BINDING_NAME_STAR_CYCLE", "Next Icon")
 
   -- slash commands
   SLASH_COMMANDS["/startest"] = function(...) self:Test(...) end
+
+	-- event registrations
+	EM:RegisterForEvent(self.addonName, EVENT_PLAYER_ACTIVATED, function(...) self:OnPlayerActivated(...) end)
 
   self.initialized = true
 end
@@ -97,11 +108,19 @@ Description:	Places the next marker on the target/player. Checks for the modifie
 							last marker instead.
 ------------------------------------------------------------------------------------------------]]--
 function ST:CycleMarker()
+	-- Get target unit type and see if it's in the allowed list to mark
 	local targetUnitType = GetUnitReactionColorType("reticleover")
+	self:DebugMsg(zo_strformat("Unit Type: <<1>>", targetUnitType))
 	if self.SV.enabledUnitType[targetUnitType] then
-		AssignTargetMarkerToReticleTarget(self.iconIndex.current)
-		self.iconIndex.current = self.iconIndex.current + 1
-		if self.iconIndex.current > self.iconIndex.max then self.iconIndex.current = 1 end
+		if IsShiftKeyDown() then self.currentIconIndex = self.currentIconIndex - 1 end -- repeat last icon if shift is held
+		if IsControlKeyDown() then self.currentIconIndex = 1 end -- start list over if ctrl is held
+		local index = self.SV.IconOrder[self.currentIconIndex]
+		if index == 9 or self.currentIconIndex == 9 then
+			self.currentIconIndex = 1
+			index = self.SV.IconOrder[self.currentIconIndex]
+		end
+		AssignTargetMarkerToReticleTarget(index)
+		self.currentIconIndex = self.currentIconIndex + 1
 	end
 end
 
@@ -121,13 +140,32 @@ end
 
 
 --[[------------------------------------------------------------------------------------------------
+function ST:OnPlayerActivated(eventCode, initial)
+Inputs:				eventCode				- Internal ZOS event code, not used here.
+							initial					- Indicates if this is the first activation from log-in.
+Outputs:			None
+Description:	Fired when the player character is available after loading screens such as changing 
+							zones, reloadui and logging in.
+------------------------------------------------------------------------------------------------]]--
+function ST:OnPlayerActivated(eventCode, initial)
+	self:DebugMsg("OnPlayerActivated event fired.")
+
+	if initial then
+		if self.initialized then self:DebugMsg("Initialized.") end
+		self:SettingsChanged()
+	end
+	EM:UnregisterForEvent(self.addonName, EVENT_PLAYER_ACTIVATED)
+end
+
+
+--[[------------------------------------------------------------------------------------------------
 function ST:BoolConvert(bool)
 Inputs:				bool                                - The bool to convert
 Outputs:			bool                                - The converted bool or the original input
 Description:	Converts a bool to text. 
 ------------------------------------------------------------------------------------------------]]--
 function ST:BoolConvert(bool)
-	if not type then return end
+	if not bool then return end
 	if type(bool) == boolean then
     if bool then return "true" else return "false" end
   end
@@ -200,7 +238,7 @@ end
 
 
 -- Global binding redirects
-function STAR_CYCLE_UP()
+function STAR_CYCLE()
 	StaticsTargeter:CycleMarker()
 end
 
